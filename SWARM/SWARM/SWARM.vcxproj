@@ -141,7 +141,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="EntityBehavior.cpp" />
+    <ClCompile Include="EntityFactory.cpp" />
+    <ClCompile Include="Field.cpp" />
+    <ClCompile Include="IOHandler.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Simulation.cpp" />
+    <ClCompile Include="Simulator.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityBehavior.h" />
+    <ClInclude Include="EntityFactory.h" />
+    <ClInclude Include="Field.h" />
+    <ClInclude Include="IOHandler.h" />
+    <ClInclude Include="Simulation.h" />
+    <ClInclude Include="Simulator.h" />
+    <ClInclude Include="SwarmIO.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
