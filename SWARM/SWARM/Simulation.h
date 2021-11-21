@@ -4,16 +4,20 @@
 
 class Simulation{
 private:
-	std::vector<Field> map;
-	std::vector<Entity> entities;
+	std::vector<std::shared_ptr<Field>> map;
+	std::vector<std::shared_ptr<Entity>> entities;
 
 public:
-	//perform and iteration of look compute move for all entities
+
+	Simulation(std::vector<std::shared_ptr<Entity>>&& entities, std::vector<std::shared_ptr<Field>>&& ma) {
+		
+	}
+	//perform an iteration of look compute move for all entities
 	void lcm() {
 		for (int i = 0 ; i < entities.size(); i++) {
-			entities[i].look();
-			entities[i].compute();
-			entities[i].move();
+			entities[i]->look();
+			entities[i]->compute();
+			entities[i]->move();
 		}
 	}
 

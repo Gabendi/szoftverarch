@@ -14,7 +14,6 @@ namespace SwarmIO {
 
 	struct VertexData {
 		int id;
-		int viewDistance;
 		std::vector<int> neighbors;
 	};
 	
