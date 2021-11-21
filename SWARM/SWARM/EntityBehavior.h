@@ -1,12 +1,13 @@
 #pragma once
-#include "Entity.h"
 #include <functional>
 #include <tuple>
 #include <vector>
 
+class Entity;
+class Field;
+
 struct OperationInfo {
 	std::weak_ptr<Field> moveIntention;
-	// [0] neighbor towards [2] with distance of [1]
 	std::vector<std::weak_ptr<Field>> fields;
 };
 
@@ -19,12 +20,10 @@ public:
 	std::function<void()> move;
 	std::vector<std::function<bool()>> moves;
 
-	EntityBehavior(std::shared_ptr<Entity> _entity){
-		entity = _entity;
-	}
+	EntityBehavior(std::shared_ptr<Entity> _entity);
 
-	EntityBehavior(){}
+	EntityBehavior();
 
-	void setEntity(std::shared_ptr<Entity> entity){ this->entity = entity; }
+	void setEntity(std::shared_ptr<Entity> entity);
 };
 

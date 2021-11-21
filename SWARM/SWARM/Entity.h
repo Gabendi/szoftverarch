@@ -1,7 +1,6 @@
 #pragma once
 #include "Field.h"
 #include "EntityBehavior.h"
-#include "EntityFactory.h"
 
 class Entity{
 private:
@@ -11,31 +10,21 @@ private:
 	std::shared_ptr<Field> field;
 
 public:
-	inline void look() {
-		behav.look();
-	}
-	inline void compute() {
-		behav.compute();
-	}
-	inline void move() {
-		behav.move();
-	}
+	void look();
+	void compute();
+	void move();
 
-	inline Field& getField() {
-		return *field;
-	}
+	Field& getField();
 
-	inline std::shared_ptr<Field> getFieldShared(){ return field; }
+	std::shared_ptr<Field> getFieldShared();
 
-	inline void setField(Field& field) { *this->field = field; }
+	void setField(Field& field);
 
-	inline int getViewDistance() { return viewDistance; }
+	int getViewDistance();
 
-	inline std::set<std::weak_ptr<Field>> getSeenFields(){ return field->rescursiveGetNeighbors(viewDistance); }
+	std::vector<std::weak_ptr<Field>> getSeenFields();
 
-	inline EntityBehavior& getBehavior() { return behav; }
-	inline Entity(int id, int viewDistance):id(id), viewDistance(viewDistance) {
-		behav.entity = std::make_shared<Entity>(this);
-	}
+	EntityBehavior& getBehavior();
+	Entity(int id, int viewDistance);
 };
 

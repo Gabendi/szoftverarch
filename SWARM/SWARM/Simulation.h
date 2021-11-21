@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "Field.h"
+#include "Entity.h"
 
 class Simulation{
 private:
@@ -15,9 +16,16 @@ public:
 	//perform an iteration of look compute move for all entities
 	void lcm() {
 		for (int i = 0 ; i < entities.size(); i++) {
-			entities[i]->look();
-			entities[i]->compute();
-			entities[i]->move();
+			Entity* entity = entities[i].get();
+			entity->look();
+		}
+		for (int i = 0; i < entities.size(); i++) {
+			Entity* entity = entities[i].get();
+			entity->compute();
+		}
+		for (int i = 0; i < entities.size(); i++) {
+			Entity* entity = entities[i].get();
+			entity->move();
 		}
 	}
 
