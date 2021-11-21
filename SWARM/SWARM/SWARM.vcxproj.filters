@@ -33,7 +33,7 @@
     <ClCompile Include="Simulation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EntityFactory.cpp">
+    <ClCompile Include="SimulationFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Simulator.cpp">
@@ -59,7 +59,7 @@
     <ClInclude Include="Simulation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EntityFactory.h">
+    <ClInclude Include="SimulationFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Simulator.h">
