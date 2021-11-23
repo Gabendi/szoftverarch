@@ -34,7 +34,7 @@ public:
 	void print() {
 		auto map = sim->getMap();
 		for (auto& node : map) {
-			node->getId();
+			node->getId()
 		}
 		std::cout << "asd";
 	}

@@ -24,6 +24,8 @@ public:
 
 	void addNeighbor(std::shared_ptr<Field> fieldShared);
 
+	inline Entity* getEntity(){ return entity; }
+
 	int getId();
 
 	std::vector<std::weak_ptr<Field>> rescursiveGetNeighbors(int depth = 1);
