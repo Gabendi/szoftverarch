@@ -22,6 +22,7 @@ public:
 
 	std::vector<Field*> getSeenFields();
 
+	int getId() { return id; }
 	EntityBehavior& getBehavior();
 	Entity(int id, int viewDistance);
 };

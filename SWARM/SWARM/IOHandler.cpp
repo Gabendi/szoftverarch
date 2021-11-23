@@ -89,21 +89,17 @@ std::pair<std::vector<SwarmIO::VertexData>, std::vector<SwarmIO::EntityData>> IO
 }
 
 bool IOHandler::getSimulationShouldPause() {
-	unsigned short ret = GetAsyncKeyState(VK_CONTROL);
-	return ret > 0;
+	return (GetAsyncKeyState(VK_CONTROL) & 0x01);
 }
 
 bool IOHandler::getSimulationShouldContinue() {
-	unsigned short ret = GetAsyncKeyState(VK_SPACE);
-	return  ret > 0;
+	return (GetAsyncKeyState(VK_SPACE) & 0x01);
 }
 
 bool IOHandler::getSimulationShouldExit() {
-	unsigned short ret = GetAsyncKeyState(VK_ESCAPE);
-	return ret > 0;
+	return (GetAsyncKeyState(VK_ESCAPE) & 0x01);
 }
 
 bool IOHandler::getSimulationShouldIterate() {
-	unsigned short ret = GetAsyncKeyState(VK_RIGHT);
-	return ret > 0;
+	return (GetAsyncKeyState(VK_RIGHT) & 0x01);
 }
