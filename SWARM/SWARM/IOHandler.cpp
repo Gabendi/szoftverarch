@@ -8,7 +8,7 @@ std::vector<SwarmIO::VertexData> IOHandler::readVertexData(std::ifstream& stream
 	std::string c_VERTICES;
 	stream >> c_VERTICES;
 	if ("VERTICES" <=> c_VERTICES != 0) throw SwarmIO::IOException("VERTICES magic missing");
-
+	stream.get();
 	for (int i = 0; i < noVertices; i++) {
 		SwarmIO::VertexData vd{};
 
@@ -16,8 +16,8 @@ std::vector<SwarmIO::VertexData> IOHandler::readVertexData(std::ifstream& stream
 
 		char bufferChar = stream.get();
 		while (bufferChar != '\n') {
-			bufferChar = stream.get();
 			line << bufferChar;
+			bufferChar = stream.get();
 		}
 
 		int bufferInt;
@@ -39,15 +39,16 @@ std::vector<SwarmIO::EntityData> IOHandler::readEntityData(std::istream& stream)
 	std::string c_ENTITIES;
 	stream >> c_ENTITIES;
 	if ("ENTITIES" <=> c_ENTITIES != 0) throw SwarmIO::IOException("ENTITIES magic missing");
+	stream.get();
 	for (int i = 0; i < noEntities; i++) {
 		SwarmIO::EntityData ed{};
 
 		std::stringstream line;
 
 		char bufferChar = stream.get();
-		while (bufferChar != '\n') {
-			bufferChar = stream.get();
+		while (bufferChar != '\n' && !stream.eof()) {
 			line << bufferChar;
+			bufferChar = stream.get();
 		}
 
 		std::string bufferString;

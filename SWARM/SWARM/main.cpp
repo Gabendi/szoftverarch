@@ -1,7 +1,7 @@
 #include <iostream>
-
+#include "IOHandler.h"
 
 int main(int argc, char* argv[]){
-    std::cout << "Hello swarm!" << std::endl;
-    return 0;
+    IOHandler handler;
+    handler.readInitFile("input.txt");
 }
