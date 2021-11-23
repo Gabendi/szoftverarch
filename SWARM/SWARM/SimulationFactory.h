@@ -13,7 +13,7 @@ public:
 
 	using compute_behav_t = bool();
 
-	virtual std::shared_ptr<Simulation> makeSimulation(std::vector<SwarmIO::EntityData> entityDatas, std::vector<SwarmIO::VertexData> vertexDatas) {
+	virtual std::shared_ptr<Simulation> makeSimulation(std::vector<SwarmIO::VertexData> vertexDatas, std::vector<SwarmIO::EntityData> entityDatas) {
 		std::vector<std::shared_ptr<Entity>> entities;
 		entities.reserve(entityDatas.size());
 

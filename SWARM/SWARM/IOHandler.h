@@ -3,6 +3,7 @@
 #include <sstream>
 #include <iterator>
 #include "SwarmIO.h"
+#include <WinUser.h>
 
 class IOHandler{
 private:
@@ -16,5 +17,13 @@ public:
 	void readHeader(std::istream& istream);
 
 	virtual std::pair<std::vector<SwarmIO::VertexData>, std::vector<SwarmIO::EntityData>> readInitFile(std::string filename);
+
+	bool getSimulationShouldPause();
+
+	bool getSimulationShouldContinue();
+
+	bool getSimulationShouldExit();
+
+	bool getSimulationShouldIterate();
 };
 
