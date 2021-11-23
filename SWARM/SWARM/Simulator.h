@@ -2,10 +2,11 @@
 #include "IOHandler.h"
 #include "Simulation.h"
 #include "SimulationFactory.h"
+#include <memory>
 
 class Simulator{
 private:
-	Simulation sim;
+	std::shared_ptr<Simulation> sim;
 	IOHandler handler;
 public:
 	Simulator(std::string scriptPath) {
@@ -16,16 +17,16 @@ public:
 
 	void run() {
 		while (!handler.getSimulationShouldExit()) {
-			if (handler.getSimulationShouldPause) {
+			if (handler.getSimulationShouldPause()) {
 				print();
 				while (!handler.getSimulationShouldContinue()) {
-					if (handler.getSimulationShouldIterate) {
-						sim.lcm();
+					if (handler.getSimulationShouldIterate()) {
+						sim->lcm();
 						print();
 					}
 				}
 			}
-			sim.lcm();
+			sim->lcm();
 		}
 	}
 
