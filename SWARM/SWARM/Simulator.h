@@ -2,6 +2,7 @@
 #include "IOHandler.h"
 #include "Simulation.h"
 #include "SimulationFactory.h"
+#include <iostream>
 #include <memory>
 
 class Simulator{
@@ -31,7 +32,11 @@ public:
 	}
 
 	void print() {
-		//TODO: print output
+		auto map = sim->getMap();
+		for (auto& node : map) {
+			node->getId();
+		}
+		std::cout << "asd";
 	}
 };
 
