@@ -24,6 +24,7 @@ public:
 
 	std::vector<std::weak_ptr<Field>> getSeenFields();
 
+	int getId() { return id; }
 	EntityBehavior& getBehavior();
 	Entity(int id, int viewDistance);
 };
