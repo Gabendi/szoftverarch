@@ -7,14 +7,14 @@ std::vector<std::weak_ptr<Field>>& Field::getNeighbors() {
 Field::Field(int id) :id(id) {}
 
 bool Field::isOccupied() {
-	return entity.lock().get() != nullptr;
+	return entity != nullptr;
 }
 
 void Field::ejectEntity() {
-	entity.reset();
+	entity = nullptr;
 }
 
-void Field::acceptEntity(std::shared_ptr<Entity> entityShared) {
+void Field::acceptEntity(Entity* entityShared) {
 	if (isOccupied()) throw std::runtime_error("field is already occupied");
 	entity = entityShared;
 }

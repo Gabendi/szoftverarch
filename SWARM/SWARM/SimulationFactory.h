@@ -29,7 +29,7 @@ public:
 
 		for (auto vdata : vertexDatas) {
 			for (auto neighbor : vdata.neighbors) {
-				fields[vdata.id]->addNeighbor(fields[neighbor]);
+				fields[vdata.id-1]->addNeighbor(fields[neighbor-1]);
 			}
 		}
 
@@ -43,7 +43,7 @@ public:
 		EntityBehavior* behav = &(newEntitySh->getBehavior());
 
 		behav->look = [behav]() {
-			auto entity = behav->entity.lock();
+			auto entity = behav->entity;
 			behav->opInfo.fields.clear();
 
 			auto fields = entity->getField().rescursiveGetNeighbors(entity->getViewDistance());
@@ -63,7 +63,7 @@ public:
 		behav->moves = parseMoveBehaviors(behav, data);
 
 		behav->move = [behav]() {
-			auto entity = behav->entity.lock();
+			auto entity = behav->entity;
 			auto moveIntention = behav->opInfo.moveIntention.lock();
 			if (*moveIntention != entity->getField()) {
 				if(moveIntention->isOccupied()) return;
@@ -115,7 +115,7 @@ public:
 
 	void addNotMovingBehav(EntityBehavior* behav, std::vector<std::function<compute_behav_t>>& computeBehavs) {
 		computeBehavs.push_back([behav]() {
-			auto entityShared = behav->entity.lock();
+			auto entityShared = behav->entity;
 			behav->opInfo.moveIntention = entityShared->getFieldShared();
 			return true;
 		});
@@ -123,7 +123,7 @@ public:
 
 	void addRandomMovingBehav(EntityBehavior* behav, std::vector<std::function<compute_behav_t>>& computeBehavs) {
 		computeBehavs.push_back([behav]() {
-			auto entityShared = behav->entity.lock();
+			auto entityShared = behav->entity;
 
 			auto neighbors = entityShared->getFieldShared()->getNeighbors();
 
@@ -152,7 +152,7 @@ public:
 
 	void addSequentialMovingBehav(EntityBehavior* behav, std::vector<std::function<compute_behav_t>>& computeBehavs) {
 		computeBehavs.push_back([behav]() {
-			auto entityShared = behav->entity.lock();
+			auto entityShared = behav->entity;
 
 			
 			std::vector<std::weak_ptr<Field>> seenFieldsWps = behav->opInfo.fields;
@@ -223,7 +223,7 @@ public:
 
 	void addMoveFromEntityBehav(EntityBehavior* behav, std::vector<std::function<compute_behav_t>>& computeBehavs) {
 		computeBehavs.push_back([behav]() {
-			auto entityShared = behav->entity.lock();
+			auto entityShared = behav->entity;
 			auto field = entityShared->getFieldShared();
 			auto neighbors = field->getNeighbors();
 

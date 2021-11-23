@@ -24,5 +24,5 @@ std::vector<std::weak_ptr<Field>> Entity::getSeenFields() { return field->rescur
 
 EntityBehavior& Entity::getBehavior() { return behav; }
 Entity::Entity(int id, int viewDistance) :id(id), viewDistance(viewDistance) {
-	behav.entity = std::shared_ptr<Entity>(this);
+	behav.entity = this;
 }
