@@ -10,7 +10,7 @@ class Entity;
 class Field{
 	int id;
 	std::vector<std::weak_ptr<Field>> neighbors;
-	std::weak_ptr<Entity> entity;
+	Entity* entity;
 public:
 	std::vector<std::weak_ptr<Field>>& getNeighbors();
 
@@ -20,7 +20,7 @@ public:
 
 	void ejectEntity();
 
-	void acceptEntity(std::shared_ptr<Entity> entityShared);
+	void acceptEntity(Entity* entityShared);
 
 	void addNeighbor(std::shared_ptr<Field> fieldShared);
 
