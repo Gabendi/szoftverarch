@@ -13,7 +13,7 @@ struct OperationInfo {
 
 class EntityBehavior{
 public:
-	std::weak_ptr<Entity> entity;
+	Entity* entity;
 	OperationInfo opInfo;
 	std::function<void()> look;
 	std::function<void()> compute;

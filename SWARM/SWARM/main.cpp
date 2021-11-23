@@ -1,7 +1,8 @@
 #include <iostream>
 #include "IOHandler.h"
+#include "Simulator.h"
 
 int main(int argc, char* argv[]){
-    IOHandler handler;
-    handler.readInitFile("input.txt");
+    Simulator simulator("input.txt");
+    simulator.run();
 }
