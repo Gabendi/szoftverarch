@@ -33,6 +33,11 @@ public:
 			}
 		}
 
+		for (size_t i = 0; i < entities.size(); i++) {
+			entities[i]->setField(fields[i].get());
+		}
+
+		std::shared_ptr<Simulation> simPtr = std::make_shared<Simulation>(std::move(entities), std::move(fields));
 		return std::make_shared<Simulation>(std::move(entities), std::move(fields));
 	}
 
@@ -46,7 +51,8 @@ public:
 			auto entity = behav->entity;
 			behav->opInfo.fields.clear();
 
-			auto fields = entity->getField().rescursiveGetNeighbors(entity->getViewDistance());
+			auto field = entity->getField();
+			auto fields = field->rescursiveGetNeighbors(entity->getViewDistance());
 			auto fieldsBegin = fields.begin();
 			auto fieldsEnd = fields.end();
 			for (;fieldsBegin != fieldsEnd; fieldsBegin++) {
@@ -64,11 +70,11 @@ public:
 
 		behav->move = [behav]() {
 			auto entity = behav->entity;
-			auto moveIntention = behav->opInfo.moveIntention.lock();
-			if (*moveIntention != entity->getField()) {
+			auto moveIntention = behav->opInfo.moveIntention;
+			if (moveIntention != entity->getField()) {
 				if(moveIntention->isOccupied()) return;
 				else {
-					entity->getField().ejectEntity();
+					entity->getField()->ejectEntity();
 					moveIntention->acceptEntity(entity);
 					return;
 				}
@@ -116,7 +122,7 @@ public:
 	void addNotMovingBehav(EntityBehavior* behav, std::vector<std::function<compute_behav_t>>& computeBehavs) {
 		computeBehavs.push_back([behav]() {
 			auto entityShared = behav->entity;
-			behav->opInfo.moveIntention = entityShared->getFieldShared();
+			behav->opInfo.moveIntention = entityShared->getField();
 			return true;
 		});
 	}
@@ -125,17 +131,18 @@ public:
 		computeBehavs.push_back([behav]() {
 			auto entityShared = behav->entity;
 
-			auto neighbors = entityShared->getFieldShared()->getNeighbors();
+			auto neighbors = entityShared->getField()->getNeighbors();
 
-			std::vector<std::shared_ptr<Field>> emptyNeighbors;
+			std::vector<Field*> emptyNeighbors;
 
 			for (int i = 0; i < neighbors.size(); i++) {
-				auto neighborSh = neighbors[i].lock();
+				auto neighborSh = neighbors[i];
 				if (!neighborSh->isOccupied()) emptyNeighbors.push_back(neighborSh);
 			}
 
 			if (emptyNeighbors.size() == 0) {
-				behav->opInfo.moveIntention = entityShared->getFieldShared();
+				behav->opInfo.moveIntention = entityShared->getField();
+				return true;
 			}
 
 			int randIndex = rand() % emptyNeighbors.size() + 1;
@@ -147,7 +154,7 @@ public:
 
 	struct VertexData {
 		int distance;
-		std::shared_ptr<Field> prev;
+		Field* prev;
 	};
 
 	void addSequentialMovingBehav(EntityBehavior* behav, std::vector<std::function<compute_behav_t>>& computeBehavs) {
@@ -155,28 +162,38 @@ public:
 			auto entityShared = behav->entity;
 
 			
-			std::vector<std::weak_ptr<Field>> seenFieldsWps = behav->opInfo.fields;
-			std::vector<std::shared_ptr<Field>> viewVertices;
-			for(auto wp : seenFieldsWps) viewVertices.push_back(wp.lock());
+			std::vector<Field*> viewVertices = behav->opInfo.fields;
 
-			auto source = entityShared->getFieldShared();
-			std::unordered_map<std::shared_ptr<Field>, VertexData> graph;
-			std::set<std::shared_ptr<Field>> q;
+			auto source = entityShared->getField();
+			std::unordered_map<Field*, VertexData> graph;
+			std::set<Field*> q;
 
 
 			for (auto fieldPtr : viewVertices) {
-				graph.at(fieldPtr).distance = INT32_MAX;
+				graph.insert({fieldPtr,  VertexData{INT32_MAX, nullptr}});
 				q.insert(fieldPtr);
 			}
 			graph[source].distance = 0;
 			graph[source].prev = source;
 
+			bool sorrounded = true;
+			for (auto neighbor : source->getNeighbors()) {
+				if(!neighbor->isOccupied()){
+					sorrounded = false;
+				}
+			}
+			if(sorrounded) {
+				behav->opInfo.moveIntention = source;
+				return true;
+			}
+
 			while (q.size() > 0) {
 
 				int min = INT32_MAX;
-				std::shared_ptr<Field> u;
+				Field* u = nullptr;
 				for (auto v : q) {
-					if (graph[v].distance < min) {
+					auto distance = graph[v].distance;
+					if (distance < min) {
 						min = graph[v].distance;
 						u = v;
 					}
@@ -185,32 +202,32 @@ public:
 				q.erase(u);
 
 				for (auto v : u->getNeighbors()) {
-					auto neighborSh = v.lock();
-					if (q. contains(neighborSh)) {
+					auto neighbor = v;
+					if (q.contains(neighbor)) {
 						
 						int alt;
-						if(neighborSh->isOccupied()) alt = INT_MAX;
+						if(neighbor->isOccupied()) alt = INT_MAX;
 						else alt = graph[u].distance + 1;
 
-						if (alt < graph[neighborSh].distance) {
-							graph[neighborSh].distance = alt;
-							graph[neighborSh].prev = u;
+						if (alt < graph[neighbor].distance) {
+							graph[neighbor].distance = alt;
+							graph[neighbor].prev = u;
 						}
 					}
 				}
 			}
 
 			int maxId = -1;
-			std::shared_ptr<Field> maxField;
+			Field* maxField = viewVertices[0];
 			for(auto v : viewVertices){
 				if (v->getId() > maxId && !v->isOccupied()) {
 					maxId = v->getId();
 					maxField = v;
 				}
 			}
-			if(maxId == -1) behav->opInfo.moveIntention = entityShared->getFieldShared();
+			if(maxId == -1) behav->opInfo.moveIntention = entityShared->getField();
 			else {
-				std::shared_ptr<Field> moveIntention = maxField;
+				Field* moveIntention = maxField;
 				for (int i = 0; i < graph[maxField].distance - 2; i++) {
 					moveIntention = graph[moveIntention].prev;
 				}
@@ -224,15 +241,15 @@ public:
 	void addMoveFromEntityBehav(EntityBehavior* behav, std::vector<std::function<compute_behav_t>>& computeBehavs) {
 		computeBehavs.push_back([behav]() {
 			auto entityShared = behav->entity;
-			auto field = entityShared->getFieldShared();
+			auto field = entityShared->getField();
 			auto neighbors = field->getNeighbors();
 
 			int min = INT_MAX;
-			std::weak_ptr<Field> minField;
+			Field* minField = neighbors[0];
 
 			for (int i = 0; i < neighbors.size(); i++) {
 				auto neighbor = neighbors[i];
-				auto neighborShared = neighbor.lock();
+				auto neighborShared = neighbor;
 				auto occCount = neighborShared->getNeighborOccupiedCount();
 				if (!neighborShared->isOccupied() && occCount < min) {
 					minField = neighborShared;

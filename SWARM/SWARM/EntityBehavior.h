@@ -7,8 +7,8 @@ class Entity;
 class Field;
 
 struct OperationInfo {
-	std::weak_ptr<Field> moveIntention;
-	std::vector<std::weak_ptr<Field>> fields;
+	Field* moveIntention;
+	std::vector<Field*> fields;
 };
 
 class EntityBehavior{

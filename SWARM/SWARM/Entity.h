@@ -7,22 +7,20 @@ private:
 	int id;
 	int viewDistance;
 	EntityBehavior behav;
-	std::shared_ptr<Field> field;
+	Field* field;
 
 public:
 	void look();
 	void compute();
 	void move();
 
-	Field& getField();
+	Field* getField();
 
-	std::shared_ptr<Field> getFieldShared();
-
-	void setField(Field& field);
+	void setField(Field* field);
 
 	int getViewDistance();
 
-	std::vector<std::weak_ptr<Field>> getSeenFields();
+	std::vector<Field*> getSeenFields();
 
 	EntityBehavior& getBehavior();
 	Entity(int id, int viewDistance);

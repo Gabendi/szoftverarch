@@ -9,10 +9,10 @@ class Entity;
 
 class Field{
 	int id;
-	std::vector<std::weak_ptr<Field>> neighbors;
+	std::vector<Field*> neighbors;
 	Entity* entity;
 public:
-	std::vector<std::weak_ptr<Field>>& getNeighbors();
+	std::vector<Field*>& getNeighbors();
 
 	Field(int id);
 
@@ -28,7 +28,7 @@ public:
 
 	int getId();
 
-	std::vector<std::weak_ptr<Field>> rescursiveGetNeighbors(int depth = 1);
+	std::vector<Field*> rescursiveGetNeighbors(int depth = 1);
 
 	int getNeighborOccupiedCount();
 

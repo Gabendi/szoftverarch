@@ -10,19 +10,18 @@ void Entity::move() {
 	behav.move();
 }
 
-Field& Entity::getField() {
-	return *field;
+Field* Entity::getField() {
+	return field;
 }
 
-std::shared_ptr<Field> Entity::getFieldShared() { return field; }
-
-void Entity::setField(Field& field) { *this->field = field; }
+void Entity::setField(Field* field) { this->field = field; }
 
 int Entity::getViewDistance() { return viewDistance; }
 
-std::vector<std::weak_ptr<Field>> Entity::getSeenFields() { return field->rescursiveGetNeighbors(viewDistance); }
+std::vector<Field*> Entity::getSeenFields() { return field->rescursiveGetNeighbors(viewDistance); }
 
 EntityBehavior& Entity::getBehavior() { return behav; }
 Entity::Entity(int id, int viewDistance) :id(id), viewDistance(viewDistance) {
 	behav.entity = this;
+	field = nullptr;
 }

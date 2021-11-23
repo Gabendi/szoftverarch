@@ -1,6 +1,6 @@
 #include "Field.h"
 
-std::vector<std::weak_ptr<Field>>& Field::getNeighbors() {
+std::vector<Field*>& Field::getNeighbors() {
 	return neighbors;
 }
 
@@ -20,42 +20,44 @@ void Field::acceptEntity(Entity* entityShared) {
 }
 
 void Field::addNeighbor(std::shared_ptr<Field> fieldShared) {
-	neighbors.push_back(fieldShared);
+	neighbors.push_back(fieldShared.get());
 }
 
 int Field::getId() { return id; }
 
-std::vector<std::weak_ptr<Field>> Field::rescursiveGetNeighbors(int depth) {
-	std::vector<std::weak_ptr<Field>> retArr;
+#include <iostream>
+
+std::vector<Field*> Field::rescursiveGetNeighbors(int depth) {
+	std::vector<Field*> retArr;
 	if (depth == 1) {
 		for (auto wkPtr : neighbors) retArr.push_back(wkPtr);
 		return retArr;
 	}
 	
 	for (auto neighbor : neighbors) {
-		auto neighborSh = neighbor.lock();
-		auto currArr = neighborSh->rescursiveGetNeighbors(depth - 1);
+		auto currArr = neighbor->rescursiveGetNeighbors(depth - 1);
 
-		for (auto wkPtr : currArr) {
+		for (auto ptr : currArr) {
 			
 			bool contains = false;
-			for(auto otherWkPtr : retArr) {
-				if (otherWkPtr.lock().get() == wkPtr.lock().get()) {
+			for(auto otherPtr : retArr) {
+				if (otherPtr == ptr) {
 					contains = true;
 					break;
 				}
 			}
 			if(contains) continue;
 			
-			retArr.push_back(wkPtr);
+			retArr.push_back(ptr);
 		}
 	}
+	return retArr;
 }
 
 int Field::getNeighborOccupiedCount() {
 	int accu = 0;
 	for (auto v : neighbors) {
-		if (v.lock()->isOccupied()) accu++;
+		if (v->isOccupied()) accu++;
 	}
 	return accu;
 }
