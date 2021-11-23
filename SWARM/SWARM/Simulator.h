@@ -2,6 +2,7 @@
 #include "IOHandler.h"
 #include "Simulation.h"
 #include "SimulationFactory.h"
+#include <memory>
 
 class Simulator{
 private:

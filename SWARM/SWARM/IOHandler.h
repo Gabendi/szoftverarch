@@ -3,7 +3,7 @@
 #include <sstream>
 #include <iterator>
 #include "SwarmIO.h"
-#include <WinUser.h>
+#include <windows.h>
 
 class IOHandler{
 private:
