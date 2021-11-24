@@ -145,7 +145,7 @@ public:
 				return true;
 			}
 
-			int randIndex = rand() % emptyNeighbors.size() + 1;
+			int randIndex = rand() % emptyNeighbors.size();
 	
 			behav->opInfo.moveIntention = emptyNeighbors[randIndex];
 			return true;

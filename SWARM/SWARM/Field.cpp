@@ -4,7 +4,9 @@ std::vector<Field*>& Field::getNeighbors() {
 	return neighbors;
 }
 
-Field::Field(int id) :id(id) {}
+Field::Field(int id) :id(id) {
+	entity = nullptr;
+}
 
 bool Field::isOccupied() {
 	return entity != nullptr;
