@@ -3,10 +3,16 @@
 #include "TxtScriptReader.h"
 
 int main(int argc, char* argv[]) {
-    Swarm::Reader::TxtScriptReader reader;
-    std::string scriptPath = "input.txt";
-    Simulator sim(scriptPath, reader);
-    sim.run();
+    
+    if (argc == 2) {
+        Swarm::Reader::TxtScriptReader reader;
+        std::string scriptPath = argv[1];
+        Simulator sim(scriptPath, reader);
+        sim.run();
+    }
+    else {
+        std::cout << "Example usage: SWARM.exe <path_to_script>";
+    }    
 
     return 0;
 }

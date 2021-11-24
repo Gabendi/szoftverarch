@@ -5,6 +5,8 @@
 #include "ScriptReaderBase.h"
 #include <iostream>
 #include <memory>
+#include <chrono>
+#include <omp.h>
 
 using namespace Swarm;
 
@@ -21,6 +23,7 @@ public:
 	}
 
 	void run() {
+		long long sum = 0;
 		while (!handler.getSimulationShouldExit()) {
 			if (handler.getSimulationShouldPause()) {
 				print();
@@ -32,9 +35,15 @@ public:
 					}
 				}
 			}
+			std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 			sim->lcm();
+			std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+			std::cout << "Ms elapsed: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << std::endl;
+			sum += std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
+			std::cout << "Avg: " << sum / ( currIterNum + 1)<< std::endl;
 			currIterNum++;
-			print();
+			//print();
+
 		}
 	}
 

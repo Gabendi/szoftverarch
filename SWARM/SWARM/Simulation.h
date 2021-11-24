@@ -16,13 +16,18 @@ public:
 	}
 	//perform an iteration of look compute move for all entities
 	void lcm() {
-		for (int i = 0 ; i < entities.size(); i++) {
-			Entity* entity = entities[i].get();
-			entity->look();
-		}
-		for (int i = 0; i < entities.size(); i++) {
-			Entity* entity = entities[i].get();
-			entity->compute();
+	#pragma omp parallel num_threads(8)
+		{
+			#pragma omp for
+			for (int i = 0; i < entities.size(); i++) {
+				Entity* entity = entities[i].get();
+				entity->look();
+			}
+			#pragma omp for
+			for (int i = 0; i < entities.size(); i++) {
+				Entity* entity = entities[i].get();
+				entity->compute();
+			}
 		}
 		for (int i = 0; i < entities.size(); i++) {
 			Entity* entity = entities[i].get();
