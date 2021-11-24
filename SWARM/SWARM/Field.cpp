@@ -16,9 +16,10 @@ void Field::ejectEntity() {
 	entity = nullptr;
 }
 
-void Field::acceptEntity(Entity* entityShared) {
+void Field::acceptEntity(Entity* entity) {
 	if (isOccupied()) throw std::runtime_error("field is already occupied");
-	entity = entityShared;
+	this->entity = entity;
+	entity->setField(this);
 }
 
 void Field::addNeighbor(std::shared_ptr<Field> fieldShared) {

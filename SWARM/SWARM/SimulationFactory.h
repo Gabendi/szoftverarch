@@ -23,7 +23,7 @@ public:
 
 		std::vector<std::shared_ptr<Field>> fields;
 		fields.reserve(vertexDatas.size());
-		for (int i = 0; i < vertexDatas.size(); i++) {
+		for (int i = 1; i <= vertexDatas.size(); i++) {
 			fields.emplace_back(std::make_shared<Field>(i));
 		}
 
@@ -199,6 +199,7 @@ public:
 					}
 				}
 
+				if(u == nullptr) break;
 				q.erase(u);
 
 				for (auto v : u->getNeighbors()) {

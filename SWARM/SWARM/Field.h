@@ -4,6 +4,7 @@
 #include <functional>
 #include <set>
 #include <stdexcept>
+#include "Entity.h"
 
 class Entity;
 

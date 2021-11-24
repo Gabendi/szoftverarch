@@ -39,7 +39,7 @@ public:
 	}
 
 	void print() {
-		std::cout << "Current iteration: " << currIterNum;
+		std::cout << "Current iteration: " << currIterNum << "\n";
 		auto map = sim->getMap();
 		for (auto& node : map) {
 			int nodeId = node->getId();

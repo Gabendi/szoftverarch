@@ -30,11 +30,11 @@ public:
 		}
 	}
 
-	auto getMap() -> decltype(map) {
+	std::vector<std::shared_ptr<Field>> getMap() {
 		return map;
 	}
 
-	auto getEntities() -> decltype(entities) {
+	std::vector<std::shared_ptr<Entity>>& getEntities() {
 		return entities;
 	}
 };
