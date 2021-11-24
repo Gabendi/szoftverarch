@@ -3,14 +3,16 @@
 #include "SwarmIO.h"
 #include <windows.h>
 
-class IOHandler{
-public:
-	bool getSimulationShouldPause();
+namespace Swarm::UI {
+	class IOHandler {
+	public:
+		bool getSimulationShouldPause();
 
-	bool getSimulationShouldContinue();
+		bool getSimulationShouldContinue();
 
-	bool getSimulationShouldExit();
+		bool getSimulationShouldExit();
 
-	bool getSimulationShouldIterate();
-};
+		bool getSimulationShouldIterate();
+	};
+}
 

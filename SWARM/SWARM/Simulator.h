@@ -6,13 +6,15 @@
 #include <iostream>
 #include <memory>
 
+using namespace Swarm;
+
 class Simulator{
 private:
 	std::shared_ptr<Simulation> sim;
-	IOHandler handler;
+	UI::IOHandler handler;
 	int currIterNum = 0;
 public:
-	Simulator(std::string scriptPath, ScriptReaderBase& reader) {
+	Simulator(std::string scriptPath, Reader::ScriptReaderBase& reader) {
 		auto simData = reader.readInitFile(scriptPath);
 		SimulationFactory simFactory;
 		sim = simFactory.makeSimulation(simData.first, simData.second);

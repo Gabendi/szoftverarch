@@ -3,7 +3,7 @@
 #include "TxtScriptReader.h"
 
 int main(int argc, char* argv[]) {
-    TxtScriptReader reader;
+    Swarm::Reader::TxtScriptReader reader;
     std::string scriptPath = "input.txt";
     Simulator sim(scriptPath, reader);
     sim.run();

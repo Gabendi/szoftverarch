@@ -1,4 +1,5 @@
 #include "IOHandler.h"
+using namespace Swarm::UI;
 
 bool IOHandler::getSimulationShouldPause() {
 	return (GetAsyncKeyState(VK_CONTROL) & 0x01);

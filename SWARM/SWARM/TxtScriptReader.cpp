@@ -1,5 +1,7 @@
 #include "TxtScriptReader.h"
 
+using namespace Swarm::Reader;
+
 std::vector<SwarmIO::VertexData> TxtScriptReader::readVertexData(std::ifstream& stream) {
 	std::vector<SwarmIO::VertexData> vertexDatas;
 	vertexDatas.reserve(noVertices);
