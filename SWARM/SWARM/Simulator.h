@@ -2,6 +2,7 @@
 #include "IOHandler.h"
 #include "Simulation.h"
 #include "SimulationFactory.h"
+#include "ScriptReaderBase.h"
 #include <iostream>
 #include <memory>
 
@@ -11,8 +12,8 @@ private:
 	IOHandler handler;
 	int currIterNum = 0;
 public:
-	Simulator(std::string scriptPath) {
-		auto simData = handler.readInitFile(scriptPath);
+	Simulator(std::string scriptPath, ScriptReaderBase& reader) {
+		auto simData = reader.readInitFile(scriptPath);
 		SimulationFactory simFactory;
 		sim = simFactory.makeSimulation(simData.first, simData.second);
 	}
