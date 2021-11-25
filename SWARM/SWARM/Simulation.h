@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>
 #include <vector>
 #include "Field.h"
 #include "Entity.h"
@@ -33,6 +34,10 @@ public:
 			Entity* entity = entities[i].get();
 			entity->move();
 		}
+	}
+	
+	void removeEntity(std::shared_ptr<Entity> entity) {
+		entities.erase(std::remove(entities.begin(), entities.end(), entity), entities.end());			
 	}
 
 	std::vector<std::shared_ptr<Field>> getMap() {

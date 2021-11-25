@@ -16,6 +16,11 @@ Field* Entity::getField() {
 
 void Entity::setField(Field* field) { this->field = field; }
 
+void Entity::remove()
+{
+	field->ejectEntity();
+}
+
 int Entity::getViewDistance() { return viewDistance; }
 
 std::vector<Field*> Entity::getSeenFields() { return field->rescursiveGetNeighbors(viewDistance); }

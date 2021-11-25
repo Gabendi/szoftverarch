@@ -17,7 +17,7 @@ public:
 	Field* getField();
 
 	void setField(Field* field);
-
+	void remove();
 	int getViewDistance();
 
 	std::vector<Field*> getSeenFields();
