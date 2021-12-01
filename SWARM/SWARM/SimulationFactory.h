@@ -35,6 +35,7 @@ public:
 
 		for (size_t i = 0; i < entities.size(); i++) {
 			entities[i]->setField(fields[i].get());
+			fields[i].get()->acceptEntity(entities[i].get());
 		}
 
 		std::shared_ptr<Simulation> simPtr = std::make_shared<Simulation>(std::move(entities), std::move(fields));
